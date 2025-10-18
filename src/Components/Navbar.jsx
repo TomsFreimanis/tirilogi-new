@@ -1,14 +1,16 @@
+
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "../assets/logo.png";
-import { Menu, X } from "lucide-react"; // Lucide ikonas (automātiski pieejamas)
+import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
-  const links = [
+  const navItems = [
     { name: "Sākums", path: "/" },
     { name: "Par mums", path: "/par-mums" },
     { name: "Pakalpojumi", path: "/pakalpojumi" },
@@ -18,93 +20,66 @@ export default function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-white/60 backdrop-blur-lg border-b border-blue-100 shadow-sm">
-      <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-3 md:py-4">
-        {/* 🔹 Logo */}
-        <Link to="/" className="flex items-center gap-3">
+      <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-3">
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-2">
           <img src={logo} alt="Tirilogi" className="h-10 w-auto" />
-          <span className="font-bold text-xl text-blue-700">Tirilogi</span>
+          <span className="text-xl font-bold text-blue-700">Tirilogi.lv</span>
         </Link>
 
-        {/* 🔹 Desktop links */}
+        {/* Desktop navigation */}
         <div className="hidden md:flex gap-8">
-          {links.map((link) => (
+          {navItems.map((item) => (
             <Link
-              key={link.path}
-              to={link.path}
-              className={`relative text-gray-700 font-medium transition-colors hover:text-blue-600 ${
-                location.pathname === link.path ? "text-blue-700" : ""
+              key={item.name}
+              to={item.path}
+              className={`font-medium transition ${
+                location.pathname === item.path
+                  ? "text-blue-700 border-b-2 border-blue-700 pb-1"
+                  : "text-gray-600 hover:text-blue-700"
               }`}
             >
-              {link.name}
-              {location.pathname === link.path && (
-                <motion.div
-                  layoutId="underline"
-                  className="absolute -bottom-1 left-0 w-full h-[2px] bg-blue-600 rounded-full"
-                />
-              )}
+              {item.name}
             </Link>
           ))}
         </div>
 
-        {/* 🔹 Mobile button */}
+        {/* Mobile menu toggle */}
         <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden text-blue-700 focus:outline-none"
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="md:hidden p-2 text-blue-700 focus:outline-none"
         >
-          {isOpen ? <X size={26} /> : <Menu size={26} />}
+          {menuOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>
 
-      {/* 🔹 Mobile menu */}
+      {/* Mobile dropdown menu */}
       <AnimatePresence>
-        {isOpen && (
-          <>
-            {/* Overlay */}
-            <motion.div
-              className="fixed inset-0 bg-black/30 backdrop-blur-sm md:hidden z-40"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsOpen(false)}
-            />
-
-            {/* Slide-in panel */}
-            <motion.div
-              className="fixed top-0 right-0 w-3/4 h-full bg-white/90 backdrop-blur-lg shadow-2xl md:hidden z-50 flex flex-col items-center justify-center gap-8 p-10 border-l border-blue-100"
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", stiffness: 80, damping: 15 }}
-            >
-              {links.map((link) => (
-                <motion.div
-                  key={link.path}
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.2 }}
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.25 }}
+            className="md:hidden bg-white/95 backdrop-blur-lg shadow-lg border-t border-blue-100"
+          >
+            <div className="flex flex-col items-center py-4 space-y-4">
+              {navItems.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  onClick={() => setMenuOpen(false)}
+                  className={`text-lg font-medium transition ${
+                    location.pathname === item.path
+                      ? "text-blue-700"
+                      : "text-gray-700 hover:text-blue-600"
+                  }`}
                 >
-                  <Link
-                    to={link.path}
-                    className={`text-2xl font-semibold ${
-                      location.pathname === link.path
-                        ? "text-blue-700"
-                        : "text-gray-700"
-                    }`}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {link.name}
-                  </Link>
-                </motion.div>
+                  {item.name}
+                </Link>
               ))}
-
-              <motion.a
-                href="/kontakti"
-                className="mt-8 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-full shadow-lg transition-all"
-                whileHover={{ scale: 1.08 }}
-              >
-                Sazināties
-              </motion.a>
-            </motion.div>
-          </>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </nav>

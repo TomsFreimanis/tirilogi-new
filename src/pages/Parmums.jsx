@@ -1,6 +1,7 @@
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import t2 from "../assets/t2.png";
-import t3 from "../assets/t3.png";
+// import t3 from "../assets/t3.png";
 
 export default function ParMums() {
   return (
