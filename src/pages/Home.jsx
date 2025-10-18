@@ -24,76 +24,35 @@ export default function Home() {
       transition={{ duration: 1 }}
     >
       {/* 🔹 HERO SEKCIJA */}
-      <section className="relative h-[100vh] flex items-center justify-center text-center overflow-hidden">
-        <video
-  autoPlay
-  loop
-  muted
-  playsInline
-  className="absolute inset-0 w-full h-full object-cover brightness-75"
->
-  <source src="/logivid.mp4" type="video/mp4" />
-</video>
+      <section className="relative h-screen flex flex-col items-center justify-center text-center text-white overflow-hidden">
+  <video
+    autoPlay
+    loop
+    muted
+    playsInline
+    className="absolute inset-0 w-full h-full object-cover brightness-75"
+  >
+    <source src="/logivid.mp4" type="video/mp4" />
+  </video>
 
+  <div className="relative z-10 px-6">
+    <h1 className="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">
+      Tīri logi, tīrs skats
+    </h1>
+    <p className="text-lg md:text-xl mb-8 text-blue-100 max-w-2xl mx-auto">
+      Logu mazgāšana mājām, birojiem un uzņēmumiem visā Latvijā — ar kvalitāti un precizitāti.
+    </p>
+    <a
+      href="/par-mums"
+      className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 md:px-8 md:py-4 rounded-lg shadow-lg transition"
+    >
+      Uzzināt vairāk
+    </a>
+  </div>
 
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-900/60 via-blue-800/50 to-blue-900/70 backdrop-blur-[2px]" />
+  <div className="absolute inset-0 bg-black/40"></div>
+</section>
 
-        <div className="relative z-10 px-6">
-          <motion.h1
-            className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 via-blue-200 to-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-          >
-            Tīrība. Precizitāte. Uzticamība.
-          </motion.h1>
-
-          <motion.p
-            className="text-lg md:text-xl max-w-2xl mx-auto mb-10 text-blue-100 leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 1 }}
-          >
-            Profesionāla logu mazgāšana mājām, birojiem un uzņēmumiem visā Latvijā.  
-            Kad redzamība ir svarīga — uztici to Tirilogi.lv.
-          </motion.p>
-
-          <motion.div
-            className="flex justify-center gap-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8, duration: 1 }}
-          >
-            <a
-              href="/pakalpojumi"
-              className="relative inline-block px-10 py-4 bg-blue-600 text-white font-semibold rounded-full overflow-hidden shadow-lg group"
-            >
-              <span className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-700 opacity-0 group-hover:opacity-100 transition duration-300"></span>
-              <span className="relative group-hover:text-white transition">
-                Skatīt pakalpojumus
-              </span>
-            </a>
-
-            <a
-              href="/par-mums"
-              className="px-10 py-4 border border-white/50 text-white font-semibold rounded-full hover:bg-white hover:text-blue-800 transition-all duration-300"
-            >
-              Par mums
-            </a>
-          </motion.div>
-        </div>
-
-        <motion.div
-          className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-blue-200"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-        >
-          <div className="w-[2px] h-8 bg-blue-300 mx-auto rounded-full"></div>
-          <span className="block mt-2 text-xs uppercase tracking-wider">
-            Ritini uz leju
-          </span>
-        </motion.div>
-      </section>
 
       {/* 🔹 3 IEMESLI */}
       <section className="py-20 bg-white text-center">

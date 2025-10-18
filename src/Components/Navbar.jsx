@@ -1,10 +1,9 @@
-
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 import logo from "../assets/logo.png";
 
 export default function Navbar() {
-  const location = useLocation();
-  const isHome = location.pathname === "/";
+  const [isOpen, setIsOpen] = useState(false);
 
   const links = [
     { path: "/", label: "Sākums" },
@@ -15,45 +14,52 @@ export default function Navbar() {
   ];
 
   return (
-    <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
-        isHome
-          ? "bg-white/30 backdrop-blur-lg text-gray-800 shadow-sm"
-          : "bg-white/80 backdrop-blur-lg text-gray-800 shadow-md"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto flex justify-between items-center py-4 px-6">
-        {/* 🔹 Logo */}
-        <div className="flex items-center gap-3">
-          <img
-            src={logo}
-            alt="Tirilogi logo"
-            className="w-10 h-10 object-contain drop-shadow-md"
-          />
-          <span className="text-xl font-semibold text-blue-700">Tirilogi</span>
-        </div>
+    <nav className="fixed top-0 left-0 w-full z-50 bg-white/30 backdrop-blur-lg text-gray-800 shadow-md">
+      <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-3">
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-2">
+          <img src={logo} alt="Tirilogi logo" className="w-10 h-10" />
+          <span className="font-semibold text-xl text-blue-700">Tirilogi</span>
+        </Link>
 
-        {/* 🔹 Navigācijas saites */}
+        {/* Desktop navigācija */}
         <ul className="hidden md:flex gap-8 font-medium">
           {links.map(({ path, label }) => (
             <li key={path}>
               <Link
                 to={path}
-                className={`relative transition-all duration-300 hover:text-blue-600 ${
-                  location.pathname === path
-                    ? "text-blue-700 font-semibold"
-                    : "text-gray-700"
-                }`}
+                className="hover:text-blue-600 transition-colors duration-300"
               >
                 {label}
-                {location.pathname === path && (
-                  <span className="absolute left-0 -bottom-1 w-full h-[2px] bg-blue-600 rounded-full animate-[fadeIn_0.3s_ease-in-out]" />
-                )}
               </Link>
             </li>
           ))}
         </ul>
+
+        {/* Mobilā izvēlne */}
+        <button
+          className="md:hidden text-3xl text-blue-700"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          ☰
+        </button>
       </div>
+
+      {/* Izkrītošā izvēlne uz mobilā */}
+      {isOpen && (
+        <div className="md:hidden bg-white/80 backdrop-blur-lg text-gray-700 px-6 py-4 flex flex-col gap-4 shadow-lg">
+          {links.map(({ path, label }) => (
+            <Link
+              key={path}
+              to={path}
+              onClick={() => setIsOpen(false)}
+              className="text-lg font-medium hover:text-blue-600"
+            >
+              {label}
+            </Link>
+          ))}
+        </div>
+      )}
     </nav>
   );
 }
