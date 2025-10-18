@@ -3,35 +3,74 @@ import { motion } from "framer-motion";
 
 export default function Kontakti() {
   return (
-    <motion.section
-      className="pt-28 pb-20 px-6 bg-gradient-to-b from-white to-blue-50 min-h-screen"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.5 }}
+    <motion.div
+      className="relative min-h-screen bg-gradient-to-b from-white via-blue-50/40 to-blue-100/30 text-gray-800 overflow-hidden pt-28 pb-20 px-6"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.6 }}
     >
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-        
-        {/* Kontaktinformācija */}
-        <div>
-          <h2 className="text-4xl font-bold text-blue-700 mb-6">Kontakti</h2>
+      {/* 🔹 Dekoratīvie blur apļi fonā */}
+      <div className="absolute top-20 left-20 w-72 h-72 bg-blue-200/30 blur-[120px] rounded-full -z-10"></div>
+      <div className="absolute bottom-40 right-20 w-96 h-96 bg-cyan-200/30 blur-[140px] rounded-full -z-10"></div>
+
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start relative z-10">
+        {/* 🔹 Kontaktinformācija */}
+        <motion.div
+          initial={{ y: 30, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-4xl font-bold text-blue-800 mb-6">Kontakti</h2>
           <p className="text-lg text-gray-700 mb-6">
             Sazinies ar mums jebkurā dienā — strādājam gan darbadienās, gan brīvdienās.
           </p>
 
           <div className="space-y-3 text-gray-700 mb-8">
-            <p><strong>E-pasts:</strong> <a href="mailto:info@tirilogi.lv" className="text-blue-700 hover:underline">info@tirilogi.lv</a></p>
-            <p><strong>Tālrunis:</strong> <a href="tel:+37127744509" className="text-blue-700 hover:underline">27744509</a></p>
-            <p><strong>Mājaslapa:</strong> <a href="https://www.tirilogi.lv" className="text-blue-700 hover:underline" target="_blank">www.tirilogi.lv</a></p>
-            <p><strong>Darbadienas:</strong> 6:00–22:00</p>
-            <p><strong>Brīvdienas:</strong> 8:00–20:00</p>
+            <p>
+              <strong>E-pasts:</strong>{" "}
+              <a
+                href="mailto:info@tirilogi.lv"
+                className="text-blue-700 hover:underline"
+              >
+                info@tirilogi.lv
+              </a>
+            </p>
+            <p>
+              <strong>Tālrunis:</strong>{" "}
+              <a
+                href="tel:+37127744509"
+                className="text-blue-700 hover:underline"
+              >
+                27744509
+              </a>
+            </p>
+            <p>
+              <strong>Mājaslapa:</strong>{" "}
+              <a
+                href="https://www.tirilogi.lv"
+                className="text-blue-700 hover:underline"
+                target="_blank"
+                rel="noreferrer"
+              >
+                www.tirilogi.lv
+              </a>
+            </p>
+            <p>
+              <strong>Darbadienas:</strong> 6:00–22:00
+            </p>
+            <p>
+              <strong>Brīvdienas:</strong> 8:00–20:00
+            </p>
           </div>
 
-          {/* Facebook poga */}
+          {/* 🔹 Facebook poga */}
           <a
             href="https://www.facebook.com/"
             target="_blank"
-            className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl shadow-md transition"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white px-6 py-3 rounded-xl shadow-md transition-transform hover:scale-105"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -47,11 +86,17 @@ export default function Kontakti() {
             </svg>
             Apskati mūs Facebook!
           </a>
-        </div>
+        </motion.div>
 
-        {/* Pieteikuma forma */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 border border-blue-100">
-          <h3 className="text-2xl font-semibold text-blue-700 mb-4">
+        {/* 🔹 Pieteikuma forma */}
+        <motion.div
+          className="bg-white/70 backdrop-blur-md rounded-3xl shadow-lg p-8 border border-blue-100 hover:shadow-2xl transition-all"
+          initial={{ y: 30, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+          viewport={{ once: true }}
+        >
+          <h3 className="text-2xl font-semibold text-blue-800 mb-4">
             Pieteikt logu mazgāšanu!
           </h3>
           <form className="flex flex-col gap-4">
@@ -72,7 +117,9 @@ export default function Kontakti() {
               />
             </div>
             <div>
-              <label className="block text-gray-700 mb-1">Papildu info (pēc izvēles)</label>
+              <label className="block text-gray-700 mb-1">
+                Papildu info (pēc izvēles)
+              </label>
               <textarea
                 rows="4"
                 placeholder="Apraksti savu objektu vai vēlamo pakalpojumu"
@@ -81,16 +128,22 @@ export default function Kontakti() {
             </div>
             <button
               type="submit"
-              className="bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition"
+              className="bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold py-3 rounded-lg hover:from-blue-700 hover:to-cyan-600 transition-all shadow-md hover:shadow-xl"
             >
               Nosūtīt pieteikumu
             </button>
           </form>
-        </div>
+        </motion.div>
       </div>
 
-      {/* Google Maps (fona sekcija) */}
-      <div className="mt-16 rounded-2xl overflow-hidden shadow-lg border border-blue-100">
+      {/* 🔹 Google Maps */}
+      <motion.div
+        className="mt-20 rounded-3xl overflow-hidden shadow-lg border border-blue-100 max-w-6xl mx-auto"
+        initial={{ opacity: 0, scale: 0.95 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.7 }}
+        viewport={{ once: true }}
+      >
         <iframe
           title="Google Maps - Tirilogi"
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d174738.87464452988!2d23.9813441!3d56.9713969!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46eece1a4dfda1c1%3A0x400cfcd68f2fe30!2sR%C4%ABga!5e0!3m2!1slv!2slv!4v1699999999999!5m2!1slv!2slv"
@@ -100,7 +153,7 @@ export default function Kontakti() {
           allowFullScreen=""
           loading="lazy"
         ></iframe>
-      </div>
-    </motion.section>
+      </motion.div>
+    </motion.div>
   );
 }
