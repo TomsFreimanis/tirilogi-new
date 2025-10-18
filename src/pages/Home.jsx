@@ -26,14 +26,15 @@ export default function Home() {
       {/* 🔹 HERO SEKCIJA */}
       <section className="relative h-[100vh] flex items-center justify-center text-center overflow-hidden">
         <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover brightness-75"
-        >
-          <source src="/src/assets/logivid.mp4" type="video/mp4" />
-        </video>
+  autoPlay
+  loop
+  muted
+  playsInline
+  className="absolute inset-0 w-full h-full object-cover brightness-75"
+>
+  <source src="/logivid.mp4" type="video/mp4" />
+</video>
+
 
         <div className="absolute inset-0 bg-gradient-to-b from-blue-900/60 via-blue-800/50 to-blue-900/70 backdrop-blur-[2px]" />
 
