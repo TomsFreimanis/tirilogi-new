@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
 import Home from "./pages/Home";
-import ParMums from "./pages/ParMums";
+import Parmums from "./pages/Parmums";
 import Pakalpojumi from "./pages/Pakalpojumi";
 import Atsauksmes from "./pages/Atsauksmes";
 import Kontakti from "./pages/Kontakti";
@@ -23,7 +23,7 @@ function AnimatedRoutes({ onChange }) {
       <Routes location={location} key={location.pathname}>
         {[
           { path: "/", element: <Home /> },
-          { path: "/par-mums", element: <ParMums /> },
+          { path: "/par-mums", element: <Parmums /> },
           { path: "/pakalpojumi", element: <Pakalpojumi /> },
           { path: "/atsauksmes", element: <Atsauksmes /> },
           { path: "/kontakti", element: <Kontakti /> },
