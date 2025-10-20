@@ -1,107 +1,182 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import dirtyGlass from "../assets/dirty-glass.png";
 import cleanGlass from "../assets/clean-glass.png";
 
 export default function WipeEffect() {
-  const containerRef = useRef(null);
-  const topCanvasRef = useRef(null);
   const bottomCanvasRef = useRef(null);
+  const topCanvasRef = useRef(null);
+  const [revealed, setRevealed] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [fadeOut, setFadeOut] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+  const isWiping = useRef(false);
+  const pathRef = useRef([]);
 
   useEffect(() => {
-    const topCanvas = topCanvasRef.current;
     const bottomCanvas = bottomCanvasRef.current;
-    const topCtx = topCanvas.getContext("2d");
+    const topCanvas = topCanvasRef.current;
+    if (!bottomCanvas || !topCanvas) return;
+
     const bottomCtx = bottomCanvas.getContext("2d");
+    const topCtx = topCanvas.getContext("2d");
 
     const dirtyImg = new Image();
     const cleanImg = new Image();
-
     dirtyImg.src = dirtyGlass;
     cleanImg.src = cleanGlass;
+
+    const radius = 100;
 
     const resize = () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
-      topCanvas.width = w;
-      topCanvas.height = h;
       bottomCanvas.width = w;
       bottomCanvas.height = h;
+      topCanvas.width = w;
+      topCanvas.height = h;
 
-      if (cleanImg.complete && dirtyImg.complete) {
-        drawBackground();
-        drawTop();
+      if (isReady) {
+        bottomCtx.drawImage(cleanImg, 0, 0, w, h);
+        topCtx.drawImage(dirtyImg, 0, 0, w, h);
       }
     };
 
-    const drawBackground = () => {
-      bottomCtx.clearRect(0, 0, bottomCanvas.width, bottomCanvas.height);
-      bottomCtx.drawImage(cleanImg, 0, 0, bottomCanvas.width, bottomCanvas.height);
+    const drawBaseImages = () => {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      bottomCanvas.width = w;
+      bottomCanvas.height = h;
+      topCanvas.width = w;
+      topCanvas.height = h;
+
+      bottomCtx.clearRect(0, 0, w, h);
+      bottomCtx.drawImage(cleanImg, 0, 0, w, h);
+
+      topCtx.globalCompositeOperation = "source-over";
+      topCtx.clearRect(0, 0, w, h);
+      topCtx.drawImage(dirtyImg, 0, 0, w, h);
     };
 
-    const drawTop = () => {
-      topCtx.globalCompositeOperation = "source-over";
-      topCtx.clearRect(0, 0, topCanvas.width, topCanvas.height);
-      topCtx.drawImage(dirtyImg, 0, 0, topCanvas.width, topCanvas.height);
+    const startWipe = (e) => {
+      e.preventDefault();
+      isWiping.current = true;
+    };
+
+    const stopWipe = () => {
+      isWiping.current = false;
     };
 
     const handleMove = (e) => {
+      if (!isWiping.current || revealed) return;
+
       const rect = topCanvas.getBoundingClientRect();
       const x = (e.clientX || e.touches?.[0]?.clientX) - rect.left;
       const y = (e.clientY || e.touches?.[0]?.clientY) - rect.top;
-      const radius = 70;
+
+      pathRef.current.push({ x, y });
 
       topCtx.globalCompositeOperation = "destination-out";
       const gradient = topCtx.createRadialGradient(x, y, 0, x, y, radius);
       gradient.addColorStop(0, "rgba(0,0,0,1)");
       gradient.addColorStop(1, "rgba(0,0,0,0)");
       topCtx.fillStyle = gradient;
-
       topCtx.beginPath();
       topCtx.arc(x, y, radius, 0, Math.PI * 2);
       topCtx.fill();
-      topCtx.globalCompositeOperation = "source-over";
+
+      // progress aprēķins
+      const fakeProgress = Math.min(100, pathRef.current.length / 3.5);
+      setProgress(fakeProgress);
+
+      if (fakeProgress >= 60 && !revealed) {
+        setFadeOut(true);
+        setTimeout(() => setRevealed(true), 1000);
+      }
     };
 
-    Promise.all([
-      new Promise((res) => (cleanImg.onload = res)),
-      new Promise((res) => (dirtyImg.onload = res)),
-    ]).then(() => {
-      resize();
+    const loadImage = (img) =>
+      new Promise((resolve) => {
+        if (img.complete) resolve();
+        else {
+          img.onload = resolve;
+          img.onerror = resolve;
+        }
+      });
+
+    Promise.all([loadImage(cleanImg), loadImage(dirtyImg)]).then(() => {
+      drawBaseImages();
+      setIsReady(true);
+
+      // 🧠 Šeit reģistrējam visus eventus (tagad droši)
       window.addEventListener("resize", resize);
-      topCanvas.addEventListener("mousemove", handleMove);
-      topCanvas.addEventListener("touchmove", handleMove);
+
+      ["mousedown", "touchstart"].forEach((ev) =>
+        topCanvas.addEventListener(ev, startWipe)
+      );
+      ["mouseup", "mouseleave", "touchend"].forEach((ev) =>
+        topCanvas.addEventListener(ev, stopWipe)
+      );
+      ["mousemove", "touchmove"].forEach((ev) =>
+        topCanvas.addEventListener(ev, handleMove)
+      );
     });
 
     return () => {
       window.removeEventListener("resize", resize);
-      topCanvas.removeEventListener("mousemove", handleMove);
-      topCanvas.removeEventListener("touchmove", handleMove);
+      ["mousedown", "touchstart", "mouseup", "mouseleave", "touchend", "mousemove", "touchmove"].forEach((ev) =>
+        topCanvas.removeEventListener(ev, handleMove)
+      );
     };
-  }, []);
+  }, [revealed]);
 
   return (
-    <div ref={containerRef} className="relative w-full h-screen overflow-hidden">
-      {/* 🔹 Apakšējais (tīrais) slānis */}
-      <canvas ref={bottomCanvasRef} className="absolute top-0 left-0 w-full h-full" />
-
-      {/* 🔹 Augšējais (netīrais) slānis */}
+    <div className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-white">
+      {/* canvas vienmēr redzams */}
+      <canvas
+        ref={bottomCanvasRef}
+        className="absolute top-0 left-0 w-full h-full select-none"
+      />
       <canvas
         ref={topCanvasRef}
-        className="absolute top-0 left-0 w-full h-full cursor-crosshair"
+        className={`absolute top-0 left-0 w-full h-full select-none cursor-crosshair transition-opacity duration-[1000ms] ${
+          fadeOut ? "opacity-0" : "opacity-100"
+        }`}
       />
 
-      {/* 🔹 Teksts virsū */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 pointer-events-none">
-        <h1 className="text-5xl md:text-6xl font-extrabold mb-4 bg-gradient-to-b from-blue-700 to-blue-900 bg-clip-text text-transparent drop-shadow-[2px_2px_8px_rgba(255,255,255,0.8)]">
-          Noslauki logu!
-        </h1>
-        <p className="text-lg md:text-xl text-gray-800 font-medium bg-white/70 px-4 py-2 rounded-xl shadow-md backdrop-blur-sm">
-          Izmanto peli vai pirkstu, lai atklātu tīru skatu.
-        </p>
-      </div>
+      {/* Loading */}
+      {!isReady && (
+        <div className="absolute z-10 text-gray-600 text-lg animate-pulse">
+          Notiek sagatavošana...
+        </div>
+      )}
 
-      {/* 🔹 Gaišs stikla atspīdums */}
-      <div className="absolute inset-0 bg-gradient-to-t from-white/15 via-transparent to-transparent z-[1] pointer-events-none"></div>
+      {/* Teksts + progress */}
+      {isReady && !revealed && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 pointer-events-none">
+          <h1 className="text-5xl md:text-6xl font-extrabold mb-4 bg-gradient-to-b from-blue-700 to-blue-900 bg-clip-text text-transparent drop-shadow-[2px_2px_8px_rgba(255,255,255,0.8)]">
+            Noslauki logu!
+          </h1>
+          <p className="text-lg md:text-xl text-gray-800 font-medium bg-white/70 px-4 py-2 rounded-xl shadow-md backdrop-blur-sm">
+            Turi nospiestu peli vai pirkstu un slauki, lai atklātu skatu.
+          </p>
+
+          <div className="w-64 h-3 bg-gray-200 rounded-full mt-6 overflow-hidden shadow-inner">
+            <div
+              className="h-full bg-gradient-to-r from-blue-400 to-blue-600 transition-all duration-200"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Kad logs tīrs */}
+      {revealed && (
+        <div className="absolute inset-0 flex items-center justify-center z-10 animate-fadeIn">
+          <h2 className="text-4xl md:text-5xl font-bold text-blue-800 drop-shadow-lg bg-white/70 px-6 py-4 rounded-xl transition-all duration-1000">
+            Tirilogi.lv — tīrs skats uz pasauli
+          </h2>
+        </div>
+      )}
     </div>
   );
 }
