@@ -15,7 +15,7 @@ function AnimatedRoutes({ onChange }) {
   const location = useLocation();
 
   useEffect(() => {
-    // kad mainās lapa, parāda pāreju  ddddd
+    // kad mainās lapa, parāda pāreju 
     onChange();
   }, [location]);
 
