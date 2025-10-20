@@ -27,7 +27,7 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* Vidējā daļa – sociālās ikonas */}
+        {/* Vidējā daļa – 3sociālās ikonas */}
        {/* Vidējā daļa – sociālās ikonas */}
 <div className="flex gap-6">
   <a
