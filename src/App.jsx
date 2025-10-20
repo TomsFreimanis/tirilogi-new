@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
-import ParMums from "./pages/ParMums";
+import ParMums from "./pages/Parmums";
 import Pakalpojumi from "./pages/Pakalpojumi";
 import Atsauksmes from "./pages/Atsauksmes";
 import Kontakti from "./pages/Kontakti";
