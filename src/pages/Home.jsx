@@ -12,7 +12,7 @@ import img8 from "../assets/8.jpg";
 import img9 from "../assets/9.jpg";
 
 export default function Home() {
-  const gallery = [img1, img2, img3, img4, img5, img6, img7, img8, img9,];
+  const gallery = [img1, img2, img3, img4, img5, img6, img7, img8, img9];
   const [selectedImg, setSelectedImg] = useState(null);
 
   return (
@@ -25,34 +25,34 @@ export default function Home() {
     >
       {/* 🔹 HERO SEKCIJA */}
       <section className="relative h-screen flex flex-col items-center justify-center text-center text-white overflow-hidden">
-  <video
-    autoPlay
-    loop
-    muted
-    playsInline
-    className="absolute inset-0 w-full h-full object-cover brightness-75"
-  >
-    <source src="/logivid.mp4" type="video/mp4" />
-  </video>
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover brightness-75"
+        >
+          <source src="/logivid.mp4" type="video/mp4" />
+        </video>
 
-  <div className="relative z-10 px-6">
-    <h1 className="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">
-      Tīri logi, tīrs skats
-    </h1>
-    <p className="text-lg md:text-xl mb-8 text-blue-100 max-w-2xl mx-auto">
-      Logu mazgāšana mājām, birojiem un uzņēmumiem visā Latvijā — ar kvalitāti un precizitāti.
-    </p>
-    <a
-      href="/par-mums"
-      className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 md:px-8 md:py-4 rounded-lg shadow-lg transition"
-    >
-      Uzzināt vairāk
-    </a>
-  </div>
+        <div className="relative z-10 px-6">
+          <h1 className="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">
+            Tīri logi, tīrs skats
+          </h1>
+          <p className="text-lg md:text-xl mb-8 text-blue-100 max-w-2xl mx-auto">
+            Logu mazgāšana mājām, birojiem un uzņēmumiem visā Latvijā — ar
+            kvalitāti un precizitāti.
+          </p>
+          <a
+            href="/par-mums"
+            className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 md:px-8 md:py-4 rounded-lg shadow-lg transition"
+          >
+            Uzzināt vairāk
+          </a>
+        </div>
 
-  <div className="absolute inset-0 bg-black/40"></div>
-</section>
-
+        <div className="absolute inset-0 bg-black/40"></div>
+      </section>
 
       {/* 🔹 3 IEMESLI */}
       <section className="py-20 bg-white text-center">

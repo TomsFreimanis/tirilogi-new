@@ -2,14 +2,14 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from "react-route
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import Navbar from "./Components/Navbar";
-import Footer from "./Components/Footer";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Parmums from "./pages/Parmums";
 import Pakalpojumi from "./pages/Pakalpojumi";
 import Atsauksmes from "./pages/Atsauksmes";
 import Kontakti from "./pages/Kontakti";
-import PageTransition from "./Components/PageTransition";
+import PageTransition from "./components/PageTransition";
 
 function AnimatedRoutes({ onChange }) {
   const location = useLocation();

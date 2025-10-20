@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
+import WipeEffect from "../components/WipeEffect";
 import t2 from "../assets/t2.png";
 // import t3 from "../assets/t3.png";
 
@@ -12,6 +13,9 @@ export default function ParMums() {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.6 }}
     >
+      {/* 🔹 Interaktīvais “Noslauki logu” efekts */}
+      <WipeEffect />
+
       {/* 🔹 Ievads */}
       <section className="max-w-6xl mx-auto px-6 md:px-12 py-24 text-center">
         <motion.h1
@@ -105,54 +109,51 @@ export default function ParMums() {
         </motion.div>
       </section>
 
-      {/* 🔹 CTA (atjaunināts dizains) */}
-<section className="relative flex flex-col items-center justify-center text-center py-24 bg-gradient-to-b from-blue-50 to-white overflow-hidden">
-  {/* Viegls stikla efekts fonā */}
-  <motion.div
-    className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(173,216,230,0.25),_transparent_70%)] blur-3xl opacity-60"
-    initial={{ opacity: 0 }}
-    whileInView={{ opacity: 0.6 }}
-    transition={{ duration: 1.2 }}
-  />
+      {/* 🔹 CTA */}
+      <section className="relative flex flex-col items-center justify-center text-center py-24 bg-gradient-to-b from-blue-50 to-white overflow-hidden">
+        <motion.div
+          className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(173,216,230,0.25),_transparent_70%)] blur-3xl opacity-60"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 0.6 }}
+          transition={{ duration: 1.2 }}
+        />
 
-  <div className="relative z-10 px-6 max-w-3xl">
-    <motion.h2
-      className="text-4xl md:text-5xl font-bold text-blue-800 mb-4"
-      initial={{ y: 20, opacity: 0 }}
-      whileInView={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6 }}
-    >
-      Tīri logi. Skaidrs skats.
-    </motion.h2>
+        <div className="relative z-10 px-6 max-w-3xl">
+          <motion.h2
+            className="text-4xl md:text-5xl font-bold text-blue-800 mb-4"
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+          >
+            Tīri logi. Skaidrs skats.
+          </motion.h2>
 
-    <motion.p
-      className="text-lg md:text-xl text-gray-600 mb-10"
-      initial={{ y: 20, opacity: 0 }}
-      whileInView={{ y: 0, opacity: 1 }}
-      transition={{ delay: 0.2, duration: 0.6 }}
-    >
-      Uztici savu skatu profesionāļiem — mēs padarīsim logus nevainojami tīrus,
-      lai Jūsu pasaule izskatītos spožāka.
-    </motion.p>
+          <motion.p
+            className="text-lg md:text-xl text-gray-600 mb-10"
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+          >
+            Uztici savu skatu profesionāļiem — mēs padarīsim logus nevainojami
+            tīrus, lai Jūsu pasaule izskatītos spožāka.
+          </motion.p>
 
-    <motion.a
-      href="/kontakti"
-      className="inline-block bg-blue-600 text-white font-semibold px-10 py-4 rounded-full shadow-md hover:shadow-blue-300/50 hover:bg-blue-700 transition-all duration-300"
-      whileHover={{ scale: 1.07 }}
-    >
-      Sazinieties ar mums
-    </motion.a>
+          <motion.a
+            href="/kontakti"
+            className="inline-block bg-blue-600 text-white font-semibold px-10 py-4 rounded-full shadow-md hover:shadow-blue-300/50 hover:bg-blue-700 transition-all duration-300"
+            whileHover={{ scale: 1.07 }}
+          >
+            Sazinieties ar mums
+          </motion.a>
 
-    {/* Dekoratīva līnija */}
-    <motion.div
-      className="mt-12 w-24 h-[3px] bg-gradient-to-r from-blue-600 to-cyan-400 mx-auto rounded-full"
-      initial={{ width: 0, opacity: 0 }}
-      whileInView={{ width: "6rem", opacity: 1 }}
-      transition={{ duration: 0.8 }}
-    />
-  </div>
-</section>
-
+          <motion.div
+            className="mt-12 w-24 h-[3px] bg-gradient-to-r from-blue-600 to-cyan-400 mx-auto rounded-full"
+            initial={{ width: 0, opacity: 0 }}
+            whileInView={{ width: "6rem", opacity: 1 }}
+            transition={{ duration: 0.8 }}
+          />
+        </div>
+      </section>
     </motion.div>
   );
 }
