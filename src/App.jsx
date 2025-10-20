@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line no-unused-vars 
 import { AnimatePresence, motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
@@ -15,7 +15,7 @@ function AnimatedRoutes({ onChange }) {
   const location = useLocation();
 
   useEffect(() => {
-    // kad mainās lapa, parāda pāreju  ddd
+    // kad mainās lapa, parāda pāreju  ddddd
     onChange();
   }, [location]);
 
