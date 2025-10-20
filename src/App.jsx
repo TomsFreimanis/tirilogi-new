@@ -1,21 +1,22 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-// eslint-disable-next-line no-unused-vars 
+// eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
-import Parmums from "./pages/Parmums";
+import ParMums from "./pages/ParMums";
 import Pakalpojumi from "./pages/Pakalpojumi";
 import Atsauksmes from "./pages/Atsauksmes";
 import Kontakti from "./pages/Kontakti";
+import PrivatumaPolitika from "./pages/PrivatumaPolitika";
 import PageTransition from "./components/PageTransition";
 
 function AnimatedRoutes({ onChange }) {
   const location = useLocation();
 
   useEffect(() => {
-    // kad mainās lapa, parāda pārejus 
+    // Parāda pārejas efektu katru reizi, kad mainās lapa
     onChange();
   }, [location]);
 
@@ -24,10 +25,11 @@ function AnimatedRoutes({ onChange }) {
       <Routes location={location} key={location.pathname}>
         {[
           { path: "/", element: <Home /> },
-          { path: "/par-mums", element: <Parmums /> },
+          { path: "/par-mums", element: <ParMums /> },
           { path: "/pakalpojumi", element: <Pakalpojumi /> },
           { path: "/atsauksmes", element: <Atsauksmes /> },
           { path: "/kontakti", element: <Kontakti /> },
+          { path: "/privatuma-politika", element: <PrivatumaPolitika /> }, // ✅ pievienots šeit!
         ].map(({ path, element }) => (
           <Route
             key={path}
@@ -55,21 +57,26 @@ export default function App() {
 
   const handlePageChange = () => {
     setShowTransition(true);
-    setTimeout(() => setShowTransition(false), 800); // 0.8s pārejas animācija
+    setTimeout(() => setShowTransition(false), 800); // pāreja 0.8s
   };
 
   return (
     <Router>
       <div className="relative min-h-screen bg-gradient-to-b from-blue-100 via-blue-50 to-white overflow-x-hidden">
-        {/* Dekoratīvais blur fons */}
+        {/* 🔹 Dekoratīvais fons ar blur efektiem */}
         <div className="absolute top-20 left-40 w-96 h-96 bg-cyan-200/40 blur-[120px] rounded-full -z-10 animate-pulse"></div>
         <div className="absolute bottom-20 right-40 w-[500px] h-[500px] bg-blue-200/40 blur-[140px] rounded-full -z-10 animate-pulse"></div>
 
+        {/* 🔹 Navigācija */}
         <Navbar />
-        {/* Mazgātāja animācija */}
+
+        {/* 🔹 Mazgātāja animācija starp lapām */}
         <PageTransition isVisible={showTransition} />
-        {/* Pārejošās lapas */}
+
+        {/* 🔹 Maršruti ar lapu pārejām */}
         <AnimatedRoutes onChange={handlePageChange} />
+
+        {/* 🔹 Footer */}
         <Footer />
       </div>
     </Router>

@@ -71,7 +71,12 @@ export default function Footer() {
             >
               27744509
             </a>
+            
           </p>
+          <a href="/privatuma-politika" className="text-sm text-blue-800/80 hover:text-white">
+  Privātuma politika
+</a>
+
         </div>
       </div>
 
