@@ -1,3 +1,5 @@
+
+
 import { useEffect, useRef, useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
@@ -27,7 +29,7 @@ export default function WipeEffect() {
     dirtyImg.src = dirtyGlass;
     cleanImg.src = cleanGlass;
 
-    const radius = window.innerWidth < 640 ? 70 : 100; // mazāks telefoniem
+    const radius = window.innerWidth < 640 ? 70 : 100;
 
     const resize = () => {
       const w = window.innerWidth;
@@ -89,7 +91,6 @@ export default function WipeEffect() {
       const fakeProgress = Math.min(100, pathRef.current.length / 3.5);
       setProgress(fakeProgress);
 
-      // Aktivizē pie 50%, nevis 60%
       if (fakeProgress >= 50 && !revealed) {
         setFadeOut(true);
         setTimeout(() => setRevealed(true), 1000);
@@ -128,6 +129,7 @@ export default function WipeEffect() {
 
   return (
     <div className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-white">
+      {/* 🔹 Canvas background */}
       <canvas
         ref={bottomCanvasRef}
         className="absolute top-0 left-0 w-full h-full select-none"
@@ -139,12 +141,14 @@ export default function WipeEffect() {
         }`}
       />
 
+      {/* 🔹 Loading text */}
       {!isReady && (
         <div className="absolute z-10 text-gray-600 text-lg animate-pulse">
           Notiek sagatavošana...
         </div>
       )}
 
+      {/* 🔹 Pirms atklāšanas */}
       {isReady && !revealed && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 pointer-events-none px-4">
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold mb-4 bg-gradient-to-b from-blue-700 to-blue-900 bg-clip-text text-transparent drop-shadow-[2px_2px_8px_rgba(255,255,255,0.8)] leading-tight">
@@ -163,6 +167,7 @@ export default function WipeEffect() {
         </div>
       )}
 
+      {/* 🔹 Kad logs notīrīts */}
       <AnimatePresence>
         {revealed && (
           <motion.div
@@ -178,7 +183,7 @@ export default function WipeEffect() {
               transition={{ delay: 0.3, duration: 0.8 }}
               className="text-2xl sm:text-3xl md:text-5xl font-bold text-blue-800 drop-shadow-lg bg-white/70 px-6 py-3 sm:py-4 rounded-xl mb-6 leading-snug"
             >
-              Tirilogi.lv — tīrs skats uz pasauli
+              Nemokies — mēs nomazgāsim 😎
             </motion.h2>
 
             <motion.a
@@ -186,12 +191,24 @@ export default function WipeEffect() {
               initial={{ y: 60, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 1, duration: 0.8 }}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 sm:px-8 py-2.5 sm:py-3 rounded-full shadow-lg hover:shadow-blue-300/50 transition-transform duration-300 hover:scale-105 text-sm sm:text-base"
+              className="relative bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 sm:px-8 py-2.5 sm:py-3 rounded-full shadow-lg hover:shadow-blue-300/50 transition-transform duration-300 hover:scale-105 text-sm sm:text-base overflow-hidden"
             >
-              Sazinies ar mums
+              <span className="relative z-10">Sazinies ar mums</span>
+              {/* Shine efekts */}
+              <motion.span
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent"
+                animate={{
+                  x: ["-100%", "200%"],
+                }}
+                transition={{
+                  duration: 2.5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
             </motion.a>
 
-            {/* ⚪️ Scroll animācija */}
+            {/* Scroll animācija */}
             <motion.div
               initial={{ opacity: 0, y: 0 }}
               animate={{
