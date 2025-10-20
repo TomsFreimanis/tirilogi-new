@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import dirtyGlass from "../assets/dirty-glass.png";
 import cleanGlass from "../assets/clean-glass.png";
 
@@ -107,7 +108,6 @@ export default function WipeEffect() {
       drawBaseImages();
       setIsReady(true);
 
-      // 🧠 Šeit reģistrējam visus eventus (tagad droši)
       window.addEventListener("resize", resize);
 
       ["mousedown", "touchstart"].forEach((ev) =>
@@ -123,15 +123,11 @@ export default function WipeEffect() {
 
     return () => {
       window.removeEventListener("resize", resize);
-      ["mousedown", "touchstart", "mouseup", "mouseleave", "touchend", "mousemove", "touchmove"].forEach((ev) =>
-        topCanvas.removeEventListener(ev, handleMove)
-      );
     };
   }, [revealed]);
 
   return (
     <div className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-white">
-      {/* canvas vienmēr redzams */}
       <canvas
         ref={bottomCanvasRef}
         className="absolute top-0 left-0 w-full h-full select-none"
@@ -143,14 +139,12 @@ export default function WipeEffect() {
         }`}
       />
 
-      {/* Loading */}
       {!isReady && (
         <div className="absolute z-10 text-gray-600 text-lg animate-pulse">
           Notiek sagatavošana...
         </div>
       )}
 
-      {/* Teksts + progress */}
       {isReady && !revealed && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 pointer-events-none">
           <h1 className="text-5xl md:text-6xl font-extrabold mb-4 bg-gradient-to-b from-blue-700 to-blue-900 bg-clip-text text-transparent drop-shadow-[2px_2px_8px_rgba(255,255,255,0.8)]">
@@ -169,14 +163,102 @@ export default function WipeEffect() {
         </div>
       )}
 
-      {/* Kad logs tīrs */}
-      {revealed && (
-        <div className="absolute inset-0 flex items-center justify-center z-10 animate-fadeIn">
-          <h2 className="text-4xl md:text-5xl font-bold text-blue-800 drop-shadow-lg bg-white/70 px-6 py-4 rounded-xl transition-all duration-1000">
-            Tirilogi.lv — tīrs skats uz pasauli
-          </h2>
-        </div>
-      )}
+      {/* 🔹 Kad logs tīrs */}
+      <AnimatePresence>
+        {revealed && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+            className="absolute inset-0 flex flex-col items-center justify-center z-20 text-center"
+          >
+            <motion.h2
+              initial={{ y: 40, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="text-4xl md:text-5xl font-bold text-blue-800 drop-shadow-lg bg-white/70 px-6 py-4 rounded-xl mb-6"
+            >
+              Tirilogi.lv — tīrs skats uz pasauli
+            </motion.h2>
+
+            <motion.a
+              href="/kontakti"
+              initial={{ y: 60, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 1, duration: 0.8 }}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:shadow-blue-300/50 transition-transform duration-300 hover:scale-105"
+            >
+              Sazinies ar mums
+            </motion.a>
+            {/* ⚪️ Scroll animācija (modernais variants) */}
+<motion.div
+  initial={{ opacity: 0, y: 0 }}
+  animate={{
+    opacity: [0, 1, 0.85, 1],
+    y: [0, 14, 0],
+  }}
+  transition={{
+    duration: 2.6,
+    repeat: Infinity,
+    ease: "easeInOut",
+  }}
+  className="mt-16 flex flex-col items-center cursor-pointer select-none group"
+  onClick={() =>
+    window.scrollTo({
+      top: window.innerHeight,
+      behavior: "smooth",
+    })
+  }
+>
+  {/* Spīdīgais teksts */}
+  <motion.span
+    animate={{
+      textShadow: [
+        "0 0 4px rgba(255,255,255,0.6)",
+        "0 0 12px rgba(255,255,255,0.9)",
+        "0 0 6px rgba(255,255,255,0.7)",
+      ],
+    }}
+    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+    className="text-white text-xl md:text-2xl font-semibold tracking-wider mb-3 drop-shadow-lg group-hover:scale-105 transition-transform duration-500"
+  >
+    Ritināt uz leju
+  </motion.span>
+
+  {/* Pulsējošais aplis */}
+  <div className="relative flex items-center justify-center">
+    <div className="absolute w-8 h-8 rounded-full bg-white/30 blur-md animate-ping" />
+    <div className="absolute w-4 h-4 rounded-full bg-white/70" />
+  </div>
+
+  {/* Bultiņa ar pulsāciju */}
+  <motion.svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={2.2}
+    stroke="white"
+    className="w-10 h-10 mt-6 drop-shadow-lg"
+    animate={{
+      y: [0, 12, 0],
+      opacity: [0.8, 1, 0.8],
+    }}
+    transition={{
+      duration: 2.2,
+      repeat: Infinity,
+      ease: "easeInOut",
+    }}
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+  </motion.svg>
+</motion.div>
+
+
+
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
